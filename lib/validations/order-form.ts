@@ -2,9 +2,8 @@ import { z } from "zod";
 
 export const orderFormSchema = z.object({
   // Step 1: Product Selection
-  size: z.enum(["малък", "среден", "голям"], {
-    required_error: "Моля, изберете размер",
-    invalid_type_error: "Моля, изберете валиден размер",
+  size: z.enum(["Малък", "Среден", "Голям"], {
+    message: "Моля, изберете размер",
   }),
 
   // Step 2: Personal Information

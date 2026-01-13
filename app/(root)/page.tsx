@@ -67,9 +67,9 @@ export default function Home() {
       </section>
 
       <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
-        <DialogContent className="overflow-y-auto">
+        <DialogContent className="overflow-y-auto border-slate-700 bg-slate-900 text-slate-200">
           <DialogHeader>
-            <DialogTitle>Поръчка</DialogTitle>
+            <DialogTitle className="text-slate-200">Поръчка</DialogTitle>
           </DialogHeader>
           <OrderForm
             key={formKey}

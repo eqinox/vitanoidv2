@@ -34,6 +34,7 @@ interface OrderFormProps {
 
 export const OrderForm = ({ onClose }: OrderFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const sizes = ["Малък", "Среден", "Голям"];
 
   const form = useForm<OrderFormData>({
     resolver: zodResolver(orderFormSchema),
@@ -115,7 +116,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
   };
 
   return (
-    <div className="">
+    <div className="text-slate-200">
       {/* Breadcrumb Navigation */}
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
@@ -124,8 +125,8 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
               asChild
               className={
                 currentStep >= 1
-                  ? "cursor-pointer"
-                  : "cursor-not-allowed opacity-50"
+                  ? "cursor-pointer text-slate-300 hover:text-slate-200"
+                  : "cursor-not-allowed text-slate-500 opacity-50"
               }
               onClick={() => handleBreadcrumbClick(1)}
             >
@@ -137,13 +138,13 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
             {currentStep >= 2 ? (
               <BreadcrumbLink
                 asChild
-                className="cursor-pointer"
+                className="cursor-pointer text-slate-300 hover:text-slate-200"
                 onClick={() => handleBreadcrumbClick(2)}
               >
                 <span>Информация</span>
               </BreadcrumbLink>
             ) : (
-              <span className="text-muted-foreground">Информация</span>
+              <span className="text-slate-500">Информация</span>
             )}
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -151,13 +152,13 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
             {currentStep >= 3 ? (
               <BreadcrumbLink
                 asChild
-                className="cursor-pointer"
+                className="cursor-pointer text-slate-300 hover:text-slate-200"
                 onClick={() => handleBreadcrumbClick(3)}
               >
                 <span>Потвърждение</span>
               </BreadcrumbLink>
             ) : (
-              <span className="text-muted-foreground">Потвърждение</span>
+              <span className="text-slate-500">Потвърждение</span>
             )}
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -169,7 +170,9 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
           {currentStep === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="mb-4 text-2xl font-bold">Изберете размер</h2>
+                <h2 className="mb-4 text-2xl font-bold text-slate-200">
+                  Изберете размер
+                </h2>
                 <div className="mb-6 flex w-1/5 justify-center">
                   <Image
                     src="/bottle-plus-filter.png"
@@ -188,30 +191,24 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                         Размер на продукта
                       </FormLabel>
                       <div className="flex flex-wrap gap-2">
-                        {(["малък", "среден", "голям"] as const).map((size) => (
-                          <div
+                        {sizes.map((size) => (
+                          <FormItem
                             key={size}
-                            className="hover:bg-accent flex cursor-pointer items-center space-x-3 rounded-lg border p-4 transition-colors"
-                            onClick={() => field.onChange(size)}
+                            className="flex cursor-pointer items-center space-x-3 rounded-lg border border-slate-700 bg-slate-800/50 p-4 transition-colors hover:bg-slate-800"
                           >
                             <FormControl>
                               <Checkbox
                                 checked={field.value === size}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    field.onChange(size);
-                                  }
+                                onCheckedChange={() => {
+                                  console.log("size", size);
+                                  field.onChange(size);
                                 }}
                               />
                             </FormControl>
                             <FormLabel className="text-md cursor-pointer font-normal capitalize md:text-lg">
-                              {size === "малък"
-                                ? "Малък"
-                                : size === "среден"
-                                  ? "Среден"
-                                  : "Голям"}
+                              {size}
                             </FormLabel>
-                          </div>
+                          </FormItem>
                         ))}
                       </div>
                       {/* <FormMessage /> */}
@@ -220,7 +217,12 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                 />
               </div>
               <div className="flex justify-end">
-                <Button type="button" onClick={handleNext} size="lg">
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  size="lg"
+                  className="bg-teal-500 text-white hover:bg-teal-600"
+                >
                   Напред
                 </Button>
               </div>
@@ -231,7 +233,9 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
           {currentStep === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="mb-4 text-2xl font-bold">Лична информация</h2>
+                <h2 className="mb-4 text-2xl font-bold text-slate-200">
+                  Лична информация
+                </h2>
                 <div className="space-y-4">
                   <div className="flex gap-2">
                     <FormField
@@ -243,6 +247,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                           <FormControl>
                             <Input
                               placeholder="Въведете вашето име"
+                              className="border-slate-700 bg-slate-800 text-slate-200 placeholder:text-slate-500 focus:border-slate-600"
                               {...field}
                             />
                           </FormControl>
@@ -259,6 +264,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                           <FormControl>
                             <Input
                               placeholder="Въведете вашата фамилия"
+                              className="border-slate-700 bg-slate-800 text-slate-200 placeholder:text-slate-500 focus:border-slate-600"
                               {...field}
                             />
                           </FormControl>
@@ -278,6 +284,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                             type="tel"
                             placeholder="0888888888"
                             maxLength={10}
+                            className="border-slate-700 bg-slate-800 text-slate-200 placeholder:text-slate-500 focus:border-slate-600"
                             {...field}
                             onChange={(e) => {
                               const value = e.target.value.replace(/\D/g, "");
@@ -301,6 +308,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                           <Input
                             type="email"
                             placeholder="example@email.com"
+                            className="border-slate-700 bg-slate-800 text-slate-200 placeholder:text-slate-500 focus:border-slate-600"
                             {...field}
                           />
                         </FormControl>
@@ -317,6 +325,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                         <FormControl>
                           <Input
                             placeholder="Въведете вашия адрес"
+                            className="border-slate-700 bg-slate-800 text-slate-200 placeholder:text-slate-500 focus:border-slate-600"
                             {...field}
                           />
                         </FormControl>
@@ -332,10 +341,16 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                   variant="outline"
                   onClick={handleBack}
                   size="lg"
+                  className="border-slate-700 text-slate-800 hover:bg-slate-800 hover:text-slate-200"
                 >
                   Назад
                 </Button>
-                <Button type="button" onClick={handleNext} size="lg">
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  size="lg"
+                  className="bg-teal-500 text-white hover:bg-teal-600"
+                >
                   Напред
                 </Button>
               </div>
@@ -346,52 +361,50 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="mb-4 text-2xl font-bold">
+                <h2 className="mb-4 text-2xl font-bold text-slate-200">
                   Потвърждение на поръчката
                 </h2>
-                <div className="bg-muted space-y-4 rounded-lg p-6">
+                <div className="space-y-4 rounded-lg border border-slate-700 bg-slate-800/50 p-6">
                   <div>
-                    <h3 className="mb-2 font-semibold">Продукт</h3>
-                    <p className="text-muted-foreground">
+                    <h3 className="mb-2 font-semibold text-slate-200">
+                      Продукт
+                    </h3>
+                    <p className="text-slate-400">
                       Размер:{" "}
-                      <span className="text-foreground font-medium capitalize">
-                        {selectedSize === "малък"
-                          ? "Малък"
-                          : selectedSize === "среден"
-                            ? "Среден"
-                            : "Голям"}
+                      <span className="font-medium text-slate-200 capitalize">
+                        {selectedSize}
                       </span>
                     </p>
                   </div>
                   <div>
-                    <h3 className="mb-2 font-semibold">Лична информация</h3>
-                    <div className="text-muted-foreground space-y-1">
+                    <h3 className="mb-2 font-semibold text-slate-200">
+                      Лична информация
+                    </h3>
+                    <div className="space-y-1 text-slate-400">
                       <p>
-                        <span className="text-foreground font-medium">
-                          Име:
-                        </span>{" "}
+                        <span className="font-medium text-slate-200">Име:</span>{" "}
                         {form.watch("name")}
                       </p>
                       <p>
-                        <span className="text-foreground font-medium">
+                        <span className="font-medium text-slate-200">
                           Фамилия:
                         </span>{" "}
                         {form.watch("familyName")}
                       </p>
                       <p>
-                        <span className="text-foreground font-medium">
+                        <span className="font-medium text-slate-200">
                           Телефон:
                         </span>{" "}
                         {form.watch("phone")}
                       </p>
                       <p>
-                        <span className="text-foreground font-medium">
+                        <span className="font-medium text-slate-200">
                           Имейл:
                         </span>{" "}
                         {form.watch("email")}
                       </p>
                       <p>
-                        <span className="text-foreground font-medium">
+                        <span className="font-medium text-slate-200">
                           Адрес:
                         </span>{" "}
                         {form.watch("address")}
@@ -406,13 +419,14 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                   variant="outline"
                   onClick={handleBack}
                   size="lg"
+                  className="border-slate-700 text-slate-800 hover:bg-slate-800 hover:text-slate-200"
                 >
                   Назад
                 </Button>
                 <Button
                   type="submit"
                   size="lg"
-                  className="bg-teal-500 hover:bg-teal-600"
+                  className="bg-teal-500 text-white hover:bg-teal-600"
                 >
                   Поръчай
                 </Button>
