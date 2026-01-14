@@ -1,20 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import About from "@/components/About";
 import { Product } from "@/components/Product";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { OrderForm } from "@/components/OrderForm";
 
 export default function Home() {
-  const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false);
-  const [formKey, setFormKey] = useState(0);
+  const router = useRouter();
 
   return (
     <div className="relative flex flex-col">
@@ -56,27 +48,12 @@ export default function Home() {
           <Button
             size="xl"
             className="cursor-pointer bg-teal-500 text-white hover:bg-teal-600"
-            onClick={() => {
-              setIsOrderDialogOpen(true);
-              setFormKey((prev) => prev + 1);
-            }}
+            onClick={() => router.push("/order")}
           >
             Направете поръчка
           </Button>
         </ul>
       </section>
-
-      <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
-        <DialogContent className="overflow-y-auto border-slate-700 bg-slate-900 text-slate-200">
-          <DialogHeader>
-            <DialogTitle className="text-slate-200">Поръчка</DialogTitle>
-          </DialogHeader>
-          <OrderForm
-            key={formKey}
-            onClose={() => setIsOrderDialogOpen(false)}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

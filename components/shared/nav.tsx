@@ -17,7 +17,7 @@ const Nav = () => {
           return (
             <li key={item.id}>
               <a
-                href={`#${item.id}`}
+                href={`/#${item.id}`}
                 className={`group flex items-center py-3`}
               >
                 <span
@@ -26,7 +26,7 @@ const Nav = () => {
                   } group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200`}
                 ></span>
                 <span
-                  className={`nav-text text-xs font-bold uppercase tracking-widest ${
+                  className={`nav-text text-xs font-bold tracking-widest uppercase ${
                     isActive ? "text-teal-400" : "text-slate-500"
                   } z-50 group-hover:text-slate-200 group-focus-visible:text-slate-200`}
                 >

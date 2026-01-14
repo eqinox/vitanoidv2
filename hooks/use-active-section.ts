@@ -1,15 +1,31 @@
 import { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 export function useActiveSection(sectionIds: string[]) {
-  // Initialize with first section (about) as default
+  const pathname = usePathname();
+  
+  // Initialize with "projects" if on /order route, otherwise first section (about)
+  const getInitialSection = () => {
+    if (pathname === "/order") {
+      return "projects";
+    }
+    return sectionIds[0] || "";
+  };
+
   const [activeSection, setActiveSection] = useState<string>(
-    sectionIds[0] || "",
+    getInitialSection(),
   );
   const sectionDataRef = useRef<
     Map<string, { ratio: number; isIntersecting: boolean }>
   >(new Map());
 
   useEffect(() => {
+    // If on /order route, set projects as active and return early
+    if (pathname === "/order") {
+      setActiveSection("projects");
+      return;
+    }
+
     // Find the scroll container - it's the element with overflow-auto that contains the sections
     const findScrollContainer = (): Element | null => {
       const scrollContainer = document.querySelector(
@@ -130,7 +146,7 @@ export function useActiveSection(sectionIds: string[]) {
       }
       sectionDataRef.current.clear();
     };
-  }, [sectionIds]);
+  }, [sectionIds, pathname]);
 
   return activeSection;
 }

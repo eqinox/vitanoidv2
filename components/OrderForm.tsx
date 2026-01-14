@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -33,6 +34,7 @@ interface OrderFormProps {
 }
 
 export const OrderForm = ({ onClose }: OrderFormProps) => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const sizes = ["Малък", "Среден", "Голям"];
 
@@ -216,7 +218,16 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                   )}
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.push("/#about")}
+                  size="lg"
+                  className="border-slate-700 text-slate-800 hover:bg-slate-800 hover:text-slate-200"
+                >
+                  Назад
+                </Button>
                 <Button
                   type="button"
                   onClick={handleNext}

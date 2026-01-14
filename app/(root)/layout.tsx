@@ -1,5 +1,4 @@
 "use client";
-// import MouseFollower from "@/components/mouse-effect/mouse-follower";
 import Header from "@/components/shared/header";
 import { useEffect, useRef, useState } from "react";
 
@@ -28,6 +27,7 @@ export default function ClientLayout({
 
   // ✅ Updates the scrollHeight state whenever the content resizes
   useEffect(() => {
+    console.log("updateScrollHeight");
     const updateScrollHeight = () => {
       if (scrollRef.current) {
         setScrollHeight(scrollRef.current.scrollHeight);
@@ -44,6 +44,7 @@ export default function ClientLayout({
 
   // ✅ Ensures the scroll container has the correct height
   useEffect(() => {
+    console.log("fixScrollHeight");
     const fixScrollHeight = () => {
       if (!scrollRef.current) return;
 
@@ -65,6 +66,7 @@ export default function ClientLayout({
 
   // ✅ Handles custom scrolling logic with the right scrollbar
   useEffect(() => {
+    console.log("handleWheelScroll");
     const handleWheelScroll = (event: WheelEvent) => {
       if (!scrollRef.current || !scrollbarRef.current) return;
 
@@ -155,7 +157,7 @@ export default function ClientLayout({
       {/* Main Wrapper */}
       <div
         ref={scrollRef}
-        className="relative z-10 hide-scrollbar overflow-auto max-md:p-5 lg:flex lg:justify-between lg:gap-4"
+        className="hide-scrollbar relative z-10 overflow-auto max-md:p-5 lg:flex lg:justify-between lg:gap-4"
         // className="relative z-10 hide-scrollbar overflow-auto overflow-x-hidden max-md:p-5 lg:flex lg:justify-between lg:gap-4"
         style={{
           overscrollBehavior: "contain", // Prevents scrolling past the content
@@ -172,7 +174,7 @@ export default function ClientLayout({
         {/* Right Scrollbar (Only this one is visible) */}
         <div
           ref={scrollbarRef}
-          className="fixed right-0 top-0 h-screen w-4 overflow-y-auto"
+          className="fixed top-0 right-0 h-screen w-4 overflow-y-auto"
           style={{
             pointerEvents: "auto",
             scrollbarWidth: "auto",
