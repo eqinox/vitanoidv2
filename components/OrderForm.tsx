@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -10,7 +9,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -20,7 +18,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,11 +28,12 @@ import {
 
 interface OrderFormProps {
   onClose: () => void;
+  onSubmitSuccess?: () => void;
 }
 
-export const OrderForm = ({ onClose }: OrderFormProps) => {
-  const router = useRouter();
+export const OrderForm = ({ onClose, onSubmitSuccess }: OrderFormProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const sizes = ["Малък", "Среден", "Голям"];
 
   const form = useForm<OrderFormData>({
@@ -109,13 +107,32 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
   const onSubmit = (data: OrderFormData) => {
     console.log("Поръчка:", data);
     // Here you would typically send the data to your backend
-    // Close the dialog after successful submission
-    setTimeout(() => {
-      onClose();
-      form.reset();
-      setCurrentStep(1);
-    }, 500);
+    // Show success screen instead of closing immediately
+    setIsSubmitted(true);
+    // Trigger confetti in parent component
+    if (onSubmitSuccess) {
+      onSubmitSuccess();
+    }
   };
+
+  // Show success screen if form is submitted
+  if (isSubmitted) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-8 text-center">
+        <h2 className="text-3xl font-bold text-slate-200 md:text-4xl">
+          Поръчката е направена успешно!
+        </h2>
+        <Button
+          type="button"
+          onClick={() => onClose()}
+          size="lg"
+          className="bg-teal-500 text-white hover:bg-teal-600"
+        >
+          Назад
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="text-slate-200">
@@ -222,7 +239,7 @@ export const OrderForm = ({ onClose }: OrderFormProps) => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/#about")}
+                  onClick={() => onClose()}
                   size="lg"
                   className="border-slate-700 text-slate-800 hover:bg-slate-800 hover:text-slate-200"
                 >
