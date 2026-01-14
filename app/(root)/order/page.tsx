@@ -10,7 +10,7 @@ export default function OrderPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleClose = () => {
-    router.push("/");
+    router.push("/#about");
   };
 
   const handleSubmitSuccess = () => {
