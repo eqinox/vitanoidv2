@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Vitanoid",
   description: "Филтър за пречистване на вода",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
